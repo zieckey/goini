@@ -1,4 +1,9 @@
-gowini
-======
+### wini
 
-An INI parser in golang
+a Go package to interact with arbitrary INI
+
+
+### Importing
+
+    import github.com/zieckey/wini
+
