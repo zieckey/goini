@@ -38,7 +38,7 @@ func test2() {
 		return
 	}
 
-	v, ok := ini.Get("", "mid")
+	v, ok := ini.Get("mid")
 	if !ok || v != "ac9219aa5232c4e519ae5fcb4d77ae5b" {
 		fmt.Printf("mid value is invalid\n")
 		return
@@ -51,12 +51,12 @@ func test2() {
 		fmt.Printf("sss size is invalid\n")
 		return
 	}
-	v, ok = ini.Get("sss", "aa")
+	v, ok = ini.SectionGet("sss", "aa")
 	if !ok || v != "bb" {
 		fmt.Printf("sss/aa value is invalid\n")
 		return
 	}
-	v, ok = ini.Get("sss", "appext")
+	v, ok = ini.SectionGet("sss", "appext")
 	if !ok || v != "ab=cd" {
 		fmt.Printf("sss/appext value is invalid\n")
 		return

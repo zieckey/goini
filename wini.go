@@ -46,8 +46,15 @@ func (ini *INI) Parse(data []byte, linesep, kvsep string) error {
 	return ini.parseINI(data, linesep, kvsep)
 }
 
-// Get looks up a value for a key in a section and returns that value, along with a boolean result similar to a map lookup.
-func (i INI) Get(section, key string) (value string, ok bool) {
+// Get looks up a value for a key in the default section
+// and returns that value, along with a boolean result similar to a map lookup.
+func (i INI) Get(key string) (value string, ok bool) {
+	return i.SectionGet("", key)
+}
+
+// Get looks up a value for a key in a section
+// and returns that value, along with a boolean result similar to a map lookup.
+func (i INI) SectionGet(section, key string) (value string, ok bool) {
 	if s := i.sections[section]; s != nil {
 		value, ok = (s)[key]
 	}
