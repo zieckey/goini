@@ -1,7 +1,8 @@
 ### wini
 
-a Go package to interact with arbitrary INI
+This a Go package to interact with arbitrary INI
 
+[![Build Status](https://secure.travis-ci.org/zieckey/wini.png)](http://travis-ci.org/zieckey/wini)
 
 ### Importing
 
