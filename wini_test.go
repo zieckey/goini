@@ -55,7 +55,6 @@ func Test1(t *testing.T) {
 	assert.Equal(t, ok, true)
 }
 
-
 func TestUft8(t *testing.T) {
 	/*
 		title=百度搜索_ipad2
@@ -98,12 +97,9 @@ func TestUft8(t *testing.T) {
 	assert.Equal(t, v, "0")
 	assert.Equal(t, ok, true)
 
-
 	v, ok = ini.Get("", "ret_limit")
 	assert.Equal(t, v, "50")
 	assert.Equal(t, ok, true)
-
-
 
 	v, ok = ini.Get("", "axxxa")
 	assert.Equal(t, v, "")
@@ -119,16 +115,42 @@ func TestUft8(t *testing.T) {
 }
 
 func TestErrorFormat(t *testing.T) {
-		filename := filepath.Join(testDataDir(), "error.ini")
+	filename := filepath.Join(testDataDir(), "error.ini")
 	ini := New()
 	err := ini.ParseFile(filename)
 	assert.NotEqual(t, nil, err)
 }
 
 func TestMemoryData1(t *testing.T) {
-	//TODO
-}
+	raw := []byte("a:av||b:bv||c:cv||||d:dv||||||")
+	ini := New()
+	err := ini.Parse(raw, "||", ":")
+	assert.Equal(t, nil, err)
 
+	v, ok := ini.Get("", "a")
+	assert.Equal(t, v, "av")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("", "b")
+	assert.Equal(t, v, "bv")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("", "c")
+	assert.Equal(t, v, "cv")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("", "d")
+	assert.Equal(t, v, "dv")
+	assert.Equal(t, ok, true)
+
+	m, ok := ini.GetKvmap("")
+	assert.Equal(t, len(m), 4)
+	assert.Equal(t, ok, true)
+
+	n, ok := ini.GetKvmap("n")
+	assert.Equal(t, len(n), 0)
+	assert.Equal(t, ok, false)
+}
 
 func testDataDir() string {
 	var file string
