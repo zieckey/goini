@@ -11,7 +11,7 @@ import (
 
 func Test1(t *testing.T) {
 
-	filename := filepath.Join(testDataDir(), "ini_parser_testfile.ini")
+	filename := filepath.Join(getTestDataDir(), "ini_parser_testfile.ini")
 	ini := New()
 	err := ini.ParseFile(filename)
 	assert.Equal(t, nil, err)
@@ -76,7 +76,7 @@ func TestUft8(t *testing.T) {
 
 	*/
 
-	filename := filepath.Join(testDataDir(), "utf8.ini")
+	filename := filepath.Join(getTestDataDir(), "utf8.ini")
 	ini := New()
 	err := ini.ParseFile(filename)
 	assert.Equal(t, nil, err)
@@ -115,7 +115,7 @@ func TestUft8(t *testing.T) {
 }
 
 func TestErrorFormat(t *testing.T) {
-	filename := filepath.Join(testDataDir(), "error.ini")
+	filename := filepath.Join(getTestDataDir(), "error.ini")
 	ini := New()
 	err := ini.ParseFile(filename)
 	assert.NotEqual(t, nil, err)
@@ -152,7 +152,7 @@ func TestMemoryData1(t *testing.T) {
 	assert.Equal(t, ok, false)
 }
 
-func testDataDir() string {
+func getTestDataDir() string {
 	var file string
 	var ok bool
 	if _, file, _, ok = runtime.Caller(0); ok {
