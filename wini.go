@@ -1,9 +1,9 @@
 package wini
 
 import (
-	"io/ioutil"
 	"bytes"
 	"errors"
+	"io/ioutil"
 	//"fmt"
 	"log"
 )
@@ -21,8 +21,11 @@ type INI struct {
 }
 
 func New() *INI {
-	ini := new(INI)
-	ini.sections = make(SectionMap)
+	ini := &INI{
+		sections: make(SectionMap),
+		linesep:  "\n",
+		kvsep:    "=",
+	}
 	return ini
 }
 
@@ -96,7 +99,7 @@ func (ini *INI) parseINI(data []byte, linesep, kvsep string) error {
 		}
 
 		k := bytes.TrimSpace(line[0:pos])
-		v := bytes.TrimSpace(line[pos + len(kvsep):])
+		v := bytes.TrimSpace(line[pos+len(kvsep):])
 		kvmap[string(k)] = string(v)
 		//log.Printf("Got a key/value pair [%v/%v] for section [%v]\n", string(k), string(v), section)
 	}
