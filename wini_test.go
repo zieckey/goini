@@ -1,7 +1,6 @@
 package wini
 
 import (
-	"fmt"
 	"path/filepath"
 	"runtime"
 	"testing"
@@ -11,7 +10,7 @@ import (
 
 func Test1(t *testing.T) {
 
-	filename := filepath.Join(getTestDataDir(), "ini_parser_testfile.ini")
+	filename := filepath.Join(getTestDataDir(t), "ini_parser_testfile.ini")
 	ini := New()
 	err := ini.ParseFile(filename)
 	assert.Equal(t, nil, err)
@@ -76,7 +75,7 @@ func TestUft8(t *testing.T) {
 
 	*/
 
-	filename := filepath.Join(getTestDataDir(), "utf8.ini")
+	filename := filepath.Join(getTestDataDir(t), "utf8.ini")
 	ini := New()
 	err := ini.ParseFile(filename)
 	assert.Equal(t, nil, err)
@@ -115,7 +114,7 @@ func TestUft8(t *testing.T) {
 }
 
 func TestErrorFormat(t *testing.T) {
-	filename := filepath.Join(getTestDataDir(), "error.ini")
+	filename := filepath.Join(getTestDataDir(t), "error.ini")
 	ini := New()
 	err := ini.ParseFile(filename)
 	assert.NotEqual(t, nil, err)
@@ -152,7 +151,6 @@ func TestMemoryData1(t *testing.T) {
 	assert.Equal(t, ok, false)
 }
 
-
 func TestMemoryData2(t *testing.T) {
 	raw := []byte("a:av||b:bv||c:cv||||d:dv||||||")
 	ini := New()
@@ -184,13 +182,42 @@ func TestMemoryData2(t *testing.T) {
 	assert.Equal(t, ok, false)
 }
 
+func TestMemoryData3(t *testing.T) {
+	raw := []byte("@|@|@|@|@|@|  a:av  @| b : bv @| c:cv  @|@|d:  dv@|@|@|@|@|@|@|")
+	ini := New()
+	err := ini.Parse(raw, "@|", ":")
+	assert.Equal(t, nil, err)
 
-func getTestDataDir() string {
+	v, ok := ini.Get("a")
+	assert.Equal(t, v, "av")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("b")
+	assert.Equal(t, v, "bv")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("c")
+	assert.Equal(t, v, "cv")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("d")
+	assert.Equal(t, v, "dv")
+	assert.Equal(t, ok, true)
+
+	m, ok := ini.GetKvmap("")
+	assert.Equal(t, len(m), 4)
+	assert.Equal(t, ok, true)
+
+	n, ok := ini.GetKvmap("n")
+	assert.Equal(t, len(n), 0)
+	assert.Equal(t, ok, false)
+}
+
+func getTestDataDir(t *testing.T) string {
 	var file string
 	var ok bool
-	if _, file, _, ok = runtime.Caller(0); ok {
-		fmt.Printf("file=%v\n", file)
-	}
+	_, file, _, ok = runtime.Caller(0)
+	assert.Equal(t, ok, true)
 
 	curdir := filepath.Dir(file)
 	return filepath.Join(curdir, "test/data")
