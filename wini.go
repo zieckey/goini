@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"errors"
 	"io/ioutil"
-	//"fmt"
 	"log"
 )
 
@@ -13,6 +12,12 @@ var _ = log.Printf
 
 type Kvmap map[string]string
 type SectionMap map[string]Kvmap
+
+const (
+	DefaultSection           = ""
+	DefaultLineSeperator     = "\n"
+	DefaultKeyValueSeperator = "="
+)
 
 type INI struct {
 	sections SectionMap
@@ -23,8 +28,8 @@ type INI struct {
 func New() *INI {
 	ini := &INI{
 		sections: make(SectionMap),
-		linesep:  "\n",
-		kvsep:    "=",
+		linesep:  DefaultLineSeperator,
+		kvsep:    DefaultKeyValueSeperator,
 	}
 	return ini
 }
@@ -37,7 +42,7 @@ func (ini *INI) ParseFile(filename string) error {
 		return err
 	}
 
-	return ini.parseINI(contents, "\n", "=")
+	return ini.parseINI(contents, DefaultLineSeperator, DefaultKeyValueSeperator)
 }
 
 // Parse parse the data to store the data in the INI
@@ -48,21 +53,22 @@ func (ini *INI) Parse(data []byte, linesep, kvsep string) error {
 
 // Get looks up a value for a key in the default section
 // and returns that value, along with a boolean result similar to a map lookup.
-func (i INI) Get(key string) (value string, ok bool) {
-	return i.SectionGet("", key)
+func (ini *INI) Get(key string) (value string, ok bool) {
+
+	return ini.SectionGet(DefaultSection, key)
 }
 
 // Get looks up a value for a key in a section
 // and returns that value, along with a boolean result similar to a map lookup.
-func (i INI) SectionGet(section, key string) (value string, ok bool) {
-	if s := i.sections[section]; s != nil {
-		value, ok = (s)[key]
+func (ini *INI) SectionGet(section, key string) (value string, ok bool) {
+	if s := ini.sections[section]; s != nil {
+		value, ok = s[key]
 	}
 	return
 }
 
-func (i INI) GetKvmap(section string) (kvmap Kvmap, ok bool) {
-	kvmap, ok = i.sections[section]
+func (ini *INI) GetKvmap(section string) (kvmap Kvmap, ok bool) {
+	kvmap, ok = ini.sections[section]
 	return kvmap, ok
 }
 
@@ -90,9 +96,8 @@ func (ini *INI) parseINI(data []byte, linesep, kvsep string) error {
 			continue
 		}
 		if line[0] == '[' && line[size-1] == ']' {
-			// Try to parse INI-Section
+			// Parse INI-Section
 			section = string(line[1 : size-1])
-			//log.Printf("Got a sction [%v]\n", section)
 			kvmap = make(Kvmap)
 			ini.sections[section] = kvmap
 			continue
@@ -108,7 +113,6 @@ func (ini *INI) parseINI(data []byte, linesep, kvsep string) error {
 		k := bytes.TrimSpace(line[0:pos])
 		v := bytes.TrimSpace(line[pos+len(kvsep):])
 		kvmap[string(k)] = string(v)
-		//log.Printf("Got a key/value pair [%v/%v] for section [%v]\n", string(k), string(v), section)
 	}
 	return nil
 }
