@@ -8,3 +8,6 @@ This a Go package to interact with arbitrary INI
 
     import github.com/zieckey/wini
 
+### Usage
+
+See the unit test file : wini_test.go
