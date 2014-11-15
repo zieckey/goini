@@ -213,6 +213,16 @@ func TestMemoryData3(t *testing.T) {
 	assert.Equal(t, ok, false)
 }
 
+func TestMemoryData4(t *testing.T) {
+	raw := []byte("@|@|@|@|@|@|  a:av  @| b : bv @| c:cv  @|@|d:  dv@|@|@|@|@|@|@|")
+	ini := New()
+	err := ini.Parse(raw, "@", ":")
+	assert.NotEqual(t, nil, err)
+
+	err = ini.Parse(raw, "@|", ":")
+	assert.Equal(t, nil, err)
+}
+
 func getTestDataDir(t *testing.T) string {
 	var file string
 	var ok bool
