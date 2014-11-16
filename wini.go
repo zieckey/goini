@@ -54,7 +54,6 @@ func (ini *INI) Parse(data []byte, linesep, kvsep string) error {
 // Get looks up a value for a key in the default section
 // and returns that value, along with a boolean result similar to a map lookup.
 func (ini *INI) Get(key string) (value string, ok bool) {
-
 	return ini.SectionGet(DefaultSection, key)
 }
 
