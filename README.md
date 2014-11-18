@@ -13,7 +13,7 @@ This is a Go package to interact with arbitrary INI
 ### Example 1
 
 The simplest example code is :
-`
+```go
 import github.com/zieckey/wini
 
 ini := wini.New()
@@ -25,11 +25,11 @@ if err != nil {
 
 v, ok := ini.Get("the-key")
 //...
-`
+```
 
 ### Example 2
 
-`
+```go
 raw := []byte("a:av|b:bv||c:cv|||d:dv||||||")
 ini := wini.New()
 err := ini.Parse(raw, "|", ":")
@@ -40,4 +40,4 @@ if err != nil {
 
 v, ok := ini.Get("a")
 //...
-`
+```
