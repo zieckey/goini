@@ -10,7 +10,7 @@ This is a Go package to interact with arbitrary INI
 
 ## Usage
 
-### Example 1
+### Example 1 : Parsing an INI file
 
 The simplest example code is :
 ```go
@@ -27,7 +27,7 @@ v, ok := ini.Get("the-key")
 //...
 ```
 
-### Example 2
+### Example 2 : Parsing the memory data like the format of INI
 
 ```go
 raw := []byte("a:av|b:bv||c:cv|||d:dv||||||")
