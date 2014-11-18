@@ -1,13 +1,43 @@
-### wini
+## wini
 
-This a Go package to interact with arbitrary INI
+This is a Go package to interact with arbitrary INI
 
 [![Build Status](https://secure.travis-ci.org/zieckey/wini.png)](http://travis-ci.org/zieckey/wini)
 
-### Importing
+## Importing
 
     import github.com/zieckey/wini
 
-### Usage
+## Usage
 
-See the unit test file : wini_test.go
+### Example 1
+
+The simplest example code is :
+`
+import github.com/zieckey/wini
+
+ini := wini.New()
+err := ini.ParseFile(filename)
+if err != nil {
+	fmt.Printf("parse INI file %v failed : %v\n", filename, err.Error())
+	return
+}
+
+v, ok := ini.Get("the-key")
+//...
+`
+
+### Example 2
+
+`
+raw := []byte("a:av|b:bv||c:cv|||d:dv||||||")
+ini := wini.New()
+err := ini.Parse(raw, "|", ":")
+if err != nil {
+	fmt.Printf("parse INI memory data failed : %v\n", err.Error())
+	return
+}
+
+v, ok := ini.Get("a")
+//...
+`
