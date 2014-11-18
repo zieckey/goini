@@ -234,5 +234,5 @@ func getTestDataDir(t *testing.T) string {
 	assert.Equal(t, ok, true)
 
 	curdir := filepath.Dir(file)
-	return filepath.Join(curdir, "test/data")
+	return filepath.Join(curdir, "examples/data")
 }
