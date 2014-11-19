@@ -66,6 +66,10 @@ func (ini *INI) GetInt(key string) (value int, ok bool) {
 	return ini.SectionGetInt(DefaultSection, key)
 }
 
+func (ini *INI) GetFloat(key string) (value float64, ok bool) {
+	return ini.SectionGetFloat(DefaultSection, key)
+}
+
 // Get looks up a value for a key in a section
 // and returns that value, along with a boolean result similar to a map lookup.
 func (ini *INI) SectionGet(section, key string) (value string, ok bool) {
