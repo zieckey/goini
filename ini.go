@@ -87,6 +87,18 @@ func (ini *INI) SectionGetInt(section, key string) (value int, ok bool) {
 	return 0, ok
 }
 
+func (ini *INI) SectionGetFloat(section, key string) (value float64, ok bool) {
+	v, ok := ini.SectionGet(section, key)
+	if ok {
+		v, err := strconv.ParseFloat(v, 64)
+		if err == nil {
+			return v, true
+		}
+	}
+
+	return 0, ok
+}
+
 func (ini *INI) GetKvmap(section string) (kvmap Kvmap, ok bool) {
 	kvmap, ok = ini.sections[section]
 	return kvmap, ok

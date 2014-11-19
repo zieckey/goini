@@ -61,9 +61,9 @@ func Test1(t *testing.T) {
 	assert.Equal(t, i, 30)
 	assert.Equal(t, ok, true)
 
-	//	f, ok := ini.SectionGetFloat("ddd", "height")
-	//	assert.Equal(t, f, 175.6)
-	//	assert.Equal(t, ok, true)
+	f, ok := ini.SectionGetFloat("ddd", "height")
+	assert.Equal(t, f, 175.6)
+	assert.Equal(t, ok, true)
 }
 
 func TestUft8(t *testing.T) {
