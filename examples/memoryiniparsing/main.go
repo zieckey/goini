@@ -6,12 +6,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/zieckey/wini"
+	"github.com/zieckey/goini"
 )
 
 func main() {
 	raw := []byte("a:av|b:bv||c:cv|||d:dv||||||")
-	ini := wini.New()
+	ini := goini.New()
 	err := ini.Parse(raw, "|", ":")
 	if err != nil {
 		fmt.Printf("parse INI memory data failed : %v\n", err.Error())

@@ -9,12 +9,12 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/zieckey/wini"
+	"github.com/zieckey/goini"
 )
 
 func main() {
 	filename := filepath.Join(testDataDir(), "ini_parser_testfile.ini")
-	ini := wini.New()
+	ini := goini.New()
 	err := ini.ParseFile(filename)
 	if err != nil {
 		fmt.Printf("parse INI file %v failed : %v\n", filename, err.Error())

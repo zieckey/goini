@@ -1,12 +1,12 @@
-## wini
+## goini
 
 This is a Go package to interact with arbitrary INI
 
-[![Build Status](https://secure.travis-ci.org/zieckey/wini.png)](http://travis-ci.org/zieckey/wini)
+[![Build Status](https://secure.travis-ci.org/zieckey/goini.png)](http://travis-ci.org/zieckey/goini)
 
 ## Importing
 
-    import github.com/zieckey/wini
+    import github.com/zieckey/goini
 
 ## Usage
 
@@ -14,9 +14,9 @@ This is a Go package to interact with arbitrary INI
 
 The simplest example code is :
 ```go
-import github.com/zieckey/wini
+import github.com/zieckey/goini
 
-ini := wini.New()
+ini := goini.New()
 err := ini.ParseFile(filename)
 if err != nil {
 	fmt.Printf("parse INI file %v failed : %v\n", filename, err.Error())
@@ -31,7 +31,7 @@ v, ok := ini.Get("the-key")
 
 ```go
 raw := []byte("a:av|b:bv||c:cv|||d:dv||||||")
-ini := wini.New()
+ini := goini.New()
 err := ini.Parse(raw, "|", ":")
 if err != nil {
 	fmt.Printf("parse INI memory data failed : %v\n", err.Error())
