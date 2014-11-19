@@ -63,15 +63,7 @@ func (ini *INI) Get(key string) (value string, ok bool) {
 }
 
 func (ini *INI) GetInt(key string) (value int, ok bool) {
-	v, ok := ini.Get(key)
-	if ok {
-		v, err := strconv.Atoi(v)
-		if err == nil {
-			return v, true
-		}
-	}
-
-	return 0, ok
+	return ini.SectionGetInt(DefaultSection, key)
 }
 
 // Get looks up a value for a key in a section
@@ -81,6 +73,18 @@ func (ini *INI) SectionGet(section, key string) (value string, ok bool) {
 		value, ok = s[key]
 	}
 	return
+}
+
+func (ini *INI) SectionGetInt(section, key string) (value int, ok bool) {
+	v, ok := ini.SectionGet(section, key)
+	if ok {
+		v, err := strconv.Atoi(v)
+		if err == nil {
+			return v, true
+		}
+	}
+
+	return 0, ok
 }
 
 func (ini *INI) GetKvmap(section string) (kvmap Kvmap, ok bool) {
