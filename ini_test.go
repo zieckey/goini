@@ -40,7 +40,7 @@ func Test1(t *testing.T) {
 	assert.Equal(t, ok, false)
 
 	m, ok := ini.GetKvmap("")
-	assert.Equal(t, len(m), 6)
+	assert.Equal(t, len(m), 7)
 	assert.Equal(t, ok, true)
 
 	n, ok := ini.GetKvmap("n")
@@ -67,6 +67,14 @@ func Test1(t *testing.T) {
 
 	f, ok = ini.SectionGetFloat("ddd", "height")
 	assert.Equal(t, f, 175.6)
+	assert.Equal(t, ok, true)
+
+	b, ok := ini.SectionGetBool("ddd", "debug")
+	assert.Equal(t, b, true)
+	assert.Equal(t, ok, true)
+
+	b, ok = ini.GetBool("debug")
+	assert.Equal(t, b, false)
 	assert.Equal(t, ok, true)
 
 }

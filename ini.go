@@ -70,6 +70,11 @@ func (ini *INI) GetFloat(key string) (value float64, ok bool) {
 	return ini.SectionGetFloat(DefaultSection, key)
 }
 
+
+func (ini *INI) GetBool(key string) (value bool, ok bool) {
+	return ini.SectionGetBool(DefaultSection, key)
+}
+
 // Get looks up a value for a key in a section
 // and returns that value, along with a boolean result similar to a map lookup.
 func (ini *INI) SectionGet(section, key string) (value string, ok bool) {
@@ -100,7 +105,20 @@ func (ini *INI) SectionGetFloat(section, key string) (value float64, ok bool) {
 		}
 	}
 
-	return 0, ok
+	return 0.0, ok
+}
+
+
+func (ini *INI) SectionGetBool(section, key string) (value bool, ok bool) {
+	v, ok := ini.SectionGet(section, key)
+	if ok {
+		v, err := strconv.ParseBool(v)
+		if err == nil {
+			return v, true
+		}
+	}
+
+	return false, ok
 }
 
 func (ini *INI) GetKvmap(section string) (kvmap Kvmap, ok bool) {
