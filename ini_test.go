@@ -115,6 +115,14 @@ func TestUft8(t *testing.T) {
 	n, ok := ini.GetKvmap("n")
 	assert.Equal(t, len(n), 0)
 	assert.Equal(t, ok, false)
+
+	i, ok := ini.GetInt("ret_limit")
+	assert.Equal(t, i, 50)
+	assert.Equal(t, ok, true)
+
+	i, ok = ini.GetInt("debug")
+	assert.Equal(t, i, 1)
+	assert.Equal(t, ok, true)
 }
 
 func TestErrorFormat(t *testing.T) {

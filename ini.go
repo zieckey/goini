@@ -9,6 +9,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"log"
+	"strconv"
 )
 
 // Suppress error if they are not otherwise used.
@@ -59,6 +60,18 @@ func (ini *INI) Parse(data []byte, linesep, kvsep string) error {
 // and returns that value, along with a boolean result similar to a map lookup.
 func (ini *INI) Get(key string) (value string, ok bool) {
 	return ini.SectionGet(DefaultSection, key)
+}
+
+func (ini *INI) GetInt(key string) (value int, ok bool) {
+	v, ok := ini.Get(key)
+	if ok {
+		v, err := strconv.Atoi(v)
+		if err == nil {
+			return v, true
+		}
+	}
+
+	return 0, ok
 }
 
 // Get looks up a value for a key in a section
