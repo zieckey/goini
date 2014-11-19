@@ -62,15 +62,20 @@ func (ini *INI) Get(key string) (value string, ok bool) {
 	return ini.SectionGet(DefaultSection, key)
 }
 
+// GetInt get value as int
 func (ini *INI) GetInt(key string) (value int, ok bool) {
 	return ini.SectionGetInt(DefaultSection, key)
 }
 
+// GetFloat get value as float64
 func (ini *INI) GetFloat(key string) (value float64, ok bool) {
 	return ini.SectionGetFloat(DefaultSection, key)
 }
 
-
+// GetBool returns the boolean value represented by the string.
+// It accepts "1", "t", "T", "true", "TRUE", "True", "on", "ON", "On", "yes", "YES", "Yes" as true
+// and "0", "f", "F", "false", "FALSE", "False", "off", "OFF", "Off", "no", "NO", "No" as false
+// Any other value returns false.
 func (ini *INI) GetBool(key string) (value bool, ok bool) {
 	return ini.SectionGetBool(DefaultSection, key)
 }
@@ -84,6 +89,7 @@ func (ini *INI) SectionGet(section, key string) (value string, ok bool) {
 	return
 }
 
+// SectionGetInt get value as int
 func (ini *INI) SectionGetInt(section, key string) (value int, ok bool) {
 	v, ok := ini.SectionGet(section, key)
 	if ok {
@@ -96,6 +102,7 @@ func (ini *INI) SectionGetInt(section, key string) (value int, ok bool) {
 	return 0, ok
 }
 
+// SectionGetFloat get value as float64
 func (ini *INI) SectionGetFloat(section, key string) (value float64, ok bool) {
 	v, ok := ini.SectionGet(section, key)
 	if ok {
@@ -108,17 +115,19 @@ func (ini *INI) SectionGetFloat(section, key string) (value float64, ok bool) {
 	return 0.0, ok
 }
 
-
+// SectionGetBool get a value as bool. See GetBool for more detail
 func (ini *INI) SectionGetBool(section, key string) (value bool, ok bool) {
 	v, ok := ini.SectionGet(section, key)
 	if ok {
-		v, err := strconv.ParseBool(v)
-		if err == nil {
-			return v, true
+		switch v {
+		case "1", "t", "T", "true", "TRUE", "True", "on", "ON", "On", "yes", "YES", "Yes":
+			return true, true
+		case "0", "f", "F", "false", "FALSE", "False", "off", "OFF", "Off", "no", "NO", "No":
+			return false, true
 		}
 	}
 
-	return false, ok
+	return false, false
 }
 
 func (ini *INI) GetKvmap(section string) (kvmap Kvmap, ok bool) {
