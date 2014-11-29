@@ -256,6 +256,38 @@ func TestMemoryData4(t *testing.T) {
 	assert.Equal(t, nil, err)
 }
 
+
+func TestGetBool(t *testing.T) {
+	raw := []byte("a:1||b:True||c:true||||d:off||e:on||f:false||g:0||||||")
+	ini := New()
+	err := ini.Parse(raw, "||", ":") // DIFFERENT with TestMemoryData1. use "||" instead of "|"
+	assert.Equal(t, nil, err)
+
+	v, ok := ini.GetBool("a")
+	assert.Equal(t, v, true)
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.GetBool("c")
+	assert.Equal(t, v, true)
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.GetBool("d")
+	assert.Equal(t, v, false)
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.GetBool("e")
+	assert.Equal(t, v, true)
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.GetBool("f")
+	assert.Equal(t, v, false)
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.GetBool("g")
+	assert.Equal(t, v, false)
+	assert.Equal(t, ok, true)
+}
+
 func TestSetParseSection(t *testing.T) {
 	raw := []byte("[xxx]@|@|@|@|@|@|  a:av  @| b : bv @| c:cv  @|@|d:  dv@|@|@|@|@|@|@|")
 	ini := New()
