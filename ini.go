@@ -61,6 +61,16 @@ func (ini *INI) Parse(data []byte, linesep, kvsep string) error {
 	return ini.parseINI(data, linesep, kvsep)
 }
 
+// SetSkipCommits set INI.skipCommits whether skip commits when parsing
+func (ini *INI) SetSkipCommits(skipCommits bool) {
+	ini.skipCommits = skipCommits
+}
+
+// SetParseSection set INI.parseSection whether process the INI section when parsing
+func (ini *INI) SetParseSection(parseSection bool) {
+	ini.parseSection = parseSection
+}
+
 // Get looks up a value for a key in the default section
 // and returns that value, along with a boolean result similar to a map lookup.
 func (ini *INI) Get(key string) (value string, ok bool) {
