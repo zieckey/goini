@@ -61,6 +61,11 @@ func (ini *INI) Parse(data []byte, linesep, kvsep string) error {
 	return ini.parseINI(data, linesep, kvsep)
 }
 
+// Reset clear all the data hold by INI
+func (ini *INI) Reset() {
+	ini.sections = make(SectionMap)
+}
+
 // SetSkipCommits set INI.skipCommits whether skip commits when parsing
 func (ini *INI) SetSkipCommits(skipCommits bool) {
 	ini.skipCommits = skipCommits

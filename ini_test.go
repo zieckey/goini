@@ -256,7 +256,6 @@ func TestMemoryData4(t *testing.T) {
 	assert.Equal(t, nil, err)
 }
 
-
 func TestGetBool(t *testing.T) {
 	raw := []byte("a:1||b:True||c:true||||d:off||e:on||f:false||g:0||||||")
 	ini := New()
@@ -314,6 +313,21 @@ func TestSetSkipCommits(t *testing.T) {
 	ini.SetSkipCommits(true)
 	err = ini.Parse(raw, "@|", ":")
 	assert.Equal(t, nil, err)
+}
+
+func TestReset(t *testing.T) {
+	raw := []byte("a:1||b:True||c:true||||d:off||e:on||f:false||g:0||||||")
+	ini := New()
+	err := ini.Parse(raw, "||", ":") // DIFFERENT with TestMemoryData1. use "||" instead of "|"
+	assert.Equal(t, nil, err)
+
+	v, ok := ini.GetBool("a")
+	assert.Equal(t, v, true)
+	assert.Equal(t, ok, true)
+
+	ini.Reset()
+	v, ok = ini.GetBool("a")
+	assert.Equal(t, ok, false)
 }
 
 func getTestDataDir(t *testing.T) string {
