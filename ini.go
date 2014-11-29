@@ -25,16 +25,20 @@ const (
 )
 
 type INI struct {
-	sections SectionMap
-	linesep  string
-	kvsep    string
+	sections     SectionMap
+	linesep      string
+	kvsep        string
+	parseSection bool
+	skipCommits  bool
 }
 
 func New() *INI {
 	ini := &INI{
-		sections: make(SectionMap),
-		linesep:  DefaultLineSeperator,
-		kvsep:    DefaultKeyValueSeperator,
+		sections:     make(SectionMap),
+		linesep:      DefaultLineSeperator,
+		kvsep:        DefaultKeyValueSeperator,
+		parseSection: false,
+		skipCommits:  false,
 	}
 	return ini
 }
@@ -46,7 +50,8 @@ func (ini *INI) ParseFile(filename string) error {
 	if err != nil {
 		return err
 	}
-
+	ini.parseSection = true
+	ini.skipCommits = true
 	return ini.parseINI(contents, DefaultLineSeperator, DefaultKeyValueSeperator)
 }
 
@@ -154,11 +159,11 @@ func (ini *INI) parseINI(data []byte, linesep, kvsep string) error {
 			// Skip blank lines
 			continue
 		}
-		if line[0] == ';' || line[0] == '#' {
+		if ini.skipCommits && line[0] == ';' || line[0] == '#' {
 			// Skip comments
 			continue
 		}
-		if line[0] == '[' && line[size-1] == ']' {
+		if ini.parseSection && line[0] == '[' && line[size-1] == ']' {
 			// Parse INI-Section
 			section = string(line[1 : size-1])
 			kvmap = make(Kvmap)
