@@ -328,6 +328,9 @@ func TestReset(t *testing.T) {
 	ini.Reset()
 	v, ok = ini.GetBool("a")
 	assert.Equal(t, ok, false)
+
+	_, ok = ini.GetKvmap("")
+	assert.Equal(t, ok, false)
 }
 
 func getTestDataDir(t *testing.T) string {
