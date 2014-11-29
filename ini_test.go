@@ -333,6 +333,30 @@ func TestReset(t *testing.T) {
 	assert.Equal(t, ok, false)
 }
 
+// run this by command : go test -test.bench="Benchmark1"
+func Benchmark1(b *testing.B) {
+	raw := []byte("a:1||b:True||c:true||||d:off||e:on||f:false||g:0||||||")
+	ini := New()
+
+	for i := 0; i < b.N; i++ {
+		ini.Parse(raw, "||", ":")
+	}
+}
+
+// run this by command : go test -test.bench="Benchmark2"
+func Benchmark2(b *testing.B) {
+	raw := []byte("a:1||b:True||c:true||||d:off||e:on||f:false||g:0||||||")
+	ini := New()
+	ini.Parse(raw, "||", ":")
+
+	for i := 0; i < b.N; i++ {
+		v, _ := ini.GetBool("f")
+		if v != false {
+
+		}
+	}
+}
+
 func getTestDataDir(t *testing.T) string {
 	var file string
 	var ok bool

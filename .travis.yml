@@ -5,6 +5,6 @@ go:
 install:
   - go get github.com/bmizerany/assert
 script:
-  - go test
+  - go test && go test -test.bench="Benchmark1" && go test -test.bench="Benchmark2"
 notifications:
   email: false
