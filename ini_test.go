@@ -61,6 +61,9 @@ func Test1(t *testing.T) {
 	assert.Equal(t, i, 30)
 	assert.Equal(t, ok, true)
 
+	i, ok = ini.SectionGetInt("ddd", "agexxx")
+	assert.Equal(t, ok, false)
+
 	f, ok := ini.GetFloat("version")
 	assert.Equal(t, f, 4.4)
 	assert.Equal(t, ok, true)
@@ -68,6 +71,9 @@ func Test1(t *testing.T) {
 	f, ok = ini.SectionGetFloat("ddd", "height")
 	assert.Equal(t, f, 175.6)
 	assert.Equal(t, ok, true)
+
+	f, ok = ini.SectionGetFloat("ddd", "heightxxx")
+	assert.Equal(t, ok, false)
 
 	b, ok := ini.SectionGetBool("ddd", "debug")
 	assert.Equal(t, b, true)
@@ -77,6 +83,13 @@ func Test1(t *testing.T) {
 	assert.Equal(t, b, false)
 	assert.Equal(t, ok, true)
 
+}
+
+func TestFileNotExist(t *testing.T) {
+	filename := "the/path/to/a/nonexist/ini/file"
+	ini := New()
+	err := ini.ParseFile(filename)
+	assert.NotEqual(t, nil, err)
 }
 
 func TestUft8(t *testing.T) {
