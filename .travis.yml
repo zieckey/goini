@@ -9,6 +9,5 @@ install:
 script:
   - go test --bench=".*" -v
   - go test -v -covermode=count -coverprofile=coverage.out
-  - $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken "W21AQM/YK6pYjUi4fcNeGTk7kgMUoB6sVTBYFNcsvuYnPA2yPjXA52aZCkApCSWBRZLBC5bKR8z8wM2BK5AyK9nVyQR6nQMRoGqn7zuoMmWYHpeHVjtTHXkDqIbznM0gLo4bmjOSccepb+EshZonGx84+/RT86i1ls1hL5UksFM="
 notifications:
-  email: false
+  - email: false
