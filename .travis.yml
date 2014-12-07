@@ -4,10 +4,7 @@ go:
   - tip
 install:
   - go get github.com/bmizerany/assert
-  - go get golang.org/x/tools/cmd/cover
-  - go get github.com/mattn/goveralls
 script:
   - go test --bench=".*" -v
-  - go test -v -covermode=count -coverprofile=coverage.out
 notifications:
   - email: false
