@@ -5,7 +5,7 @@ This is a Go package to interact with arbitrary INI
 Our applications have a lot of memory data which are key/value pairs in the form of various separators NOT only '\n'. 
 I have not found any golang open source code suitable for it. So I write it myself.
 
-[![Build Status](https://secure.travis-ci.org/zieckey/goini.png)](http://travis-ci.org/zieckey/goini)
+[![Build Status](https://secure.travis-ci.org/zieckey/goini.png)](http://travis-ci.org/zieckey/goini) [![Coverage Status](https://coveralls.io/repos/zieckey/goini/badge.png)](https://coveralls.io/r/zieckey/goini)
 
 
 ## Importing
