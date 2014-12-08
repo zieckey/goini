@@ -7,4 +7,4 @@ install:
 script:
   - go test --bench=".*" -v
 notifications:
-  - email: false
+  email: false
