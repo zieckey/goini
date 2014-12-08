@@ -101,7 +101,7 @@ func (ini *INI) GetBool(key string) (value bool, ok bool) {
 	return ini.SectionGetBool(DefaultSection, key)
 }
 
-// Get looks up a value for a key in a section
+// SectionGet looks up a value for a key in a section
 // and returns that value, along with a boolean result similar to a map lookup.
 func (ini *INI) SectionGet(section, key string) (value string, ok bool) {
 	if s := ini.sections[section]; s != nil {
@@ -151,6 +151,7 @@ func (ini *INI) SectionGetBool(section, key string) (value bool, ok bool) {
 	return false, false
 }
 
+// GetKvmap gets all keys under section as a Kvmap (map[string]string).
 func (ini *INI) GetKvmap(section string) (kvmap Kvmap, ok bool) {
 	kvmap, ok = ini.sections[section]
 	return kvmap, ok
