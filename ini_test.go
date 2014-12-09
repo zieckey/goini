@@ -12,7 +12,81 @@ import (
 	"testing"
 )
 
+
 func Test1(t *testing.T) {
+
+	filename := filepath.Join(getTestDataDir(t), "ini_parser_testfile.ini")
+	ini := New()
+	err := ini.ParseFile(filename)
+	assert.Equal(t, nil, err)
+
+	v, ok := ini.Get("mid")
+	assert.Equal(t, v, "ac9219aa5232c4e519ae5fcb4d77ae5b")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("product")
+	assert.Equal(t, v, "ppp")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("combo")
+	assert.Equal(t, v, "ccc")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("aa")
+	assert.Equal(t, v, "bb")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("axxxa")
+	assert.Equal(t, v, "")
+	assert.Equal(t, ok, false)
+
+	m, ok := ini.GetKvmap("")
+	assert.Equal(t, len(m), 7)
+	assert.Equal(t, ok, true)
+
+	n, ok := ini.GetKvmap("n")
+	assert.Equal(t, len(n), 0)
+	assert.Equal(t, ok, false)
+
+	sss, ok := ini.GetKvmap("sss")
+	assert.Equal(t, len(sss), 2)
+	assert.Equal(t, ok, true)
+	v, ok = ini.SectionGet("sss", "aa")
+	assert.Equal(t, v, "bb")
+	assert.Equal(t, ok, true)
+	v, ok = ini.SectionGet("sss", "appext")
+	assert.Equal(t, v, "ab=cd")
+	assert.Equal(t, ok, true)
+
+	i, ok := ini.SectionGetInt("ddd", "age")
+	assert.Equal(t, i, 30)
+	assert.Equal(t, ok, true)
+
+	i, ok = ini.SectionGetInt("ddd", "agexxx")
+	assert.Equal(t, ok, false)
+
+	f, ok := ini.GetFloat("version")
+	assert.Equal(t, f, 4.4)
+	assert.Equal(t, ok, true)
+
+	f, ok = ini.SectionGetFloat("ddd", "height")
+	assert.Equal(t, f, 175.6)
+	assert.Equal(t, ok, true)
+
+	f, ok = ini.SectionGetFloat("ddd", "heightxxx")
+	assert.Equal(t, ok, false)
+
+	b, ok := ini.SectionGetBool("ddd", "debug")
+	assert.Equal(t, b, true)
+	assert.Equal(t, ok, true)
+
+	b, ok = ini.GetBool("debug")
+	assert.Equal(t, b, false)
+	assert.Equal(t, ok, true)
+
+}
+
+func Test2(t *testing.T) {
 
 	filename := filepath.Join(getTestDataDir(t), "ini_parser_testfile.ini")
 	ini := New()
@@ -119,6 +193,152 @@ func Test1(t *testing.T) {
 	ini.SectionSet("asec", "a", "bval")
 	v, ok = ini.SectionGet("asec", "a")
 	assert.Equal(t, v, "bval")
+	assert.Equal(t, ok, true)
+}
+
+
+func Test3(t *testing.T) {
+	filename := filepath.Join(getTestDataDir(t), "ini_parser_testfile.ini")
+	ini := New()
+	err := ini.ParseFile(filename)
+	assert.Equal(t, nil, err)
+
+	v, ok := ini.Get("mid")
+	assert.Equal(t, v, "ac9219aa5232c4e519ae5fcb4d77ae5b")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("product")
+	assert.Equal(t, v, "ppp")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("combo")
+	assert.Equal(t, v, "ccc")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("aa")
+	assert.Equal(t, v, "bb")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("axxxa")
+	assert.Equal(t, v, "")
+	assert.Equal(t, ok, false)
+
+	m, ok := ini.GetKvmap("")
+	assert.Equal(t, len(m), 7)
+	assert.Equal(t, ok, true)
+
+	n, ok := ini.GetKvmap("n")
+	assert.Equal(t, len(n), 0)
+	assert.Equal(t, ok, false)
+
+	sss, ok := ini.GetKvmap("sss")
+	assert.Equal(t, len(sss), 2)
+	assert.Equal(t, ok, true)
+	v, ok = ini.SectionGet("sss", "aa")
+	assert.Equal(t, v, "bb")
+	assert.Equal(t, ok, true)
+	v, ok = ini.SectionGet("sss", "appext")
+	assert.Equal(t, v, "ab=cd")
+	assert.Equal(t, ok, true)
+
+	i, ok := ini.SectionGetInt("ddd", "age")
+	assert.Equal(t, i, 30)
+	assert.Equal(t, ok, true)
+
+	i, ok = ini.SectionGetInt("ddd", "agexxx")
+	assert.Equal(t, ok, false)
+
+	f, ok := ini.GetFloat("version")
+	assert.Equal(t, f, 4.4)
+	assert.Equal(t, ok, true)
+
+	f, ok = ini.SectionGetFloat("ddd", "height")
+	assert.Equal(t, f, 175.6)
+	assert.Equal(t, ok, true)
+
+	f, ok = ini.SectionGetFloat("ddd", "heightxxx")
+	assert.Equal(t, ok, false)
+
+	b, ok := ini.SectionGetBool("ddd", "debug")
+	assert.Equal(t, b, true)
+	assert.Equal(t, ok, true)
+
+	b, ok = ini.GetBool("debug")
+	assert.Equal(t, b, false)
+	assert.Equal(t, ok, true)
+
+
+	//Wirte
+	var buf bytes.Buffer
+	err = ini.Write(&buf)
+	assert.Equal(t, err, nil)
+
+	ini.Reset()
+	err = ini.Parse(buf.Bytes(), "\n", "=")
+	assert.Equal(t, nil, err)
+
+	v, ok = ini.Get("mid")
+	assert.Equal(t, v, "ac9219aa5232c4e519ae5fcb4d77ae5b")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("product")
+	assert.Equal(t, v, "ppp")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("combo")
+	assert.Equal(t, v, "ccc")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("aa")
+	assert.Equal(t, v, "bb")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("axxxa")
+	assert.Equal(t, v, "")
+	assert.Equal(t, ok, false)
+
+	m, ok = ini.GetKvmap("")
+	assert.Equal(t, len(m), 7)
+	assert.Equal(t, ok, true)
+
+	n, ok = ini.GetKvmap("n")
+	assert.Equal(t, len(n), 0)
+	assert.Equal(t, ok, false)
+
+	sss, ok = ini.GetKvmap("sss")
+	assert.Equal(t, len(sss), 2)
+	assert.Equal(t, ok, true)
+	v, ok = ini.SectionGet("sss", "aa")
+	assert.Equal(t, v, "bb")
+	assert.Equal(t, ok, true)
+	v, ok = ini.SectionGet("sss", "appext")
+	assert.Equal(t, v, "ab=cd")
+	assert.Equal(t, ok, true)
+
+	i, ok = ini.SectionGetInt("ddd", "age")
+	assert.Equal(t, i, 30)
+	assert.Equal(t, ok, true)
+
+	i, ok = ini.SectionGetInt("ddd", "agexxx")
+	assert.Equal(t, ok, false)
+
+	f, ok = ini.GetFloat("version")
+	assert.Equal(t, f, 4.4)
+	assert.Equal(t, ok, true)
+
+	f, ok = ini.SectionGetFloat("ddd", "height")
+	assert.Equal(t, f, 175.6)
+	assert.Equal(t, ok, true)
+
+	f, ok = ini.SectionGetFloat("ddd", "heightxxx")
+	assert.Equal(t, ok, false)
+
+	b, ok = ini.SectionGetBool("ddd", "debug")
+	assert.Equal(t, b, true)
+	assert.Equal(t, ok, true)
+
+	b, ok = ini.GetBool("debug")
+	assert.Equal(t, b, false)
 	assert.Equal(t, ok, true)
 }
 
@@ -242,7 +462,7 @@ func TestMemoryData1(t *testing.T) {
 	assert.Equal(t, err, nil)
 
 	ini.Reset()
-	err = ini.Parse(raw, "|", ":")
+	err = ini.Parse(buf.Bytes(), "|", ":")
 	assert.Equal(t, err, nil)
 
 	v, ok = ini.Get("a")
