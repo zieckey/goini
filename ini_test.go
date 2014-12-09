@@ -35,12 +35,16 @@ func Test1(t *testing.T) {
 	assert.Equal(t, v, "bb")
 	assert.Equal(t, ok, true)
 
+	m, ok := ini.GetKvmap("")
+	assert.Equal(t, len(m), 7)
+	assert.Equal(t, ok, true)
+
 	v, ok = ini.Get("axxxa")
 	assert.Equal(t, v, "")
 	assert.Equal(t, ok, false)
-
-	m, ok := ini.GetKvmap("")
-	assert.Equal(t, len(m), 7)
+	ini.Set("axxxa", "aval")
+	v, ok = ini.Get("axxxa")
+	assert.Equal(t, v, "aval")
 	assert.Equal(t, ok, true)
 
 	n, ok := ini.GetKvmap("n")
@@ -60,16 +64,32 @@ func Test1(t *testing.T) {
 	i, ok := ini.SectionGetInt("ddd", "age")
 	assert.Equal(t, i, 30)
 	assert.Equal(t, ok, true)
+	ini.SectionSetInt("ddd", "age", 40)
+	i, ok = ini.SectionGetInt("ddd", "age")
+	assert.Equal(t, i, 40)
+	assert.Equal(t, ok, true)
 
 	i, ok = ini.SectionGetInt("ddd", "agexxx")
 	assert.Equal(t, ok, false)
+	ini.SectionSetInt("ddd", "agexxx", 1)
+	i, ok = ini.SectionGetInt("ddd", "agexxx")
+	assert.Equal(t, i, 1)
+	assert.Equal(t, ok, true)
 
 	f, ok := ini.GetFloat("version")
 	assert.Equal(t, f, 4.4)
 	assert.Equal(t, ok, true)
+	ini.SetFloat("version", 5.5)
+	f, ok = ini.GetFloat("version")
+	assert.Equal(t, f, 5.5)
+	assert.Equal(t, ok, true)
 
 	f, ok = ini.SectionGetFloat("ddd", "height")
 	assert.Equal(t, f, 175.6)
+	assert.Equal(t, ok, true)
+	ini.SectionSetFloat("ddd", "height", 160.1)
+	f, ok = ini.SectionGetFloat("ddd", "height")
+	assert.Equal(t, f, 160.1)
 	assert.Equal(t, ok, true)
 
 	f, ok = ini.SectionGetFloat("ddd", "heightxxx")
@@ -78,11 +98,28 @@ func Test1(t *testing.T) {
 	b, ok := ini.SectionGetBool("ddd", "debug")
 	assert.Equal(t, b, true)
 	assert.Equal(t, ok, true)
+	ini.SectionSetBool("ddd", "debug", false)
+	b, ok = ini.SectionGetBool("ddd", "debug")
+	assert.Equal(t, b, false)
+	assert.Equal(t, ok, true)
 
 	b, ok = ini.GetBool("debug")
 	assert.Equal(t, b, false)
 	assert.Equal(t, ok, true)
+	ini.SetBool("debug", true)
+	b, ok = ini.GetBool("debug")
+	assert.Equal(t, b, true)
+	assert.Equal(t, ok, true)
 
+	ini.SectionSet("asec", "a", "aval")
+	v, ok = ini.SectionGet("asec", "a")
+	assert.Equal(t, v, "aval")
+	assert.Equal(t, ok, true)
+
+	ini.SectionSet("asec", "a", "bval")
+	v, ok = ini.SectionGet("asec", "a")
+	assert.Equal(t, v, "bval")
+	assert.Equal(t, ok, true)
 }
 
 func TestFileNotExist(t *testing.T) {
@@ -152,6 +189,10 @@ func TestUft8(t *testing.T) {
 
 	i, ok := ini.GetInt("ret_limit")
 	assert.Equal(t, i, 50)
+	assert.Equal(t, ok, true)
+	ini.SetInt("ret_limit", 40)
+	i, ok = ini.GetInt("ret_limit")
+	assert.Equal(t, i, 40)
 	assert.Equal(t, ok, true)
 
 	i, ok = ini.GetInt("debug")
