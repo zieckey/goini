@@ -157,6 +157,63 @@ func (ini *INI) GetKvmap(section string) (kvmap Kvmap, ok bool) {
 	return kvmap, ok
 }
 
+// Set store the key/value pair to the default section of this INI,
+// creating it if it wasn't already present.
+func (ini *INI) Set(key, value string) {
+	ini.SectionSet(DefaultSection, key, value)
+}
+
+// SetInt store the key/value pair to the default section of this INI,
+// creating it if it wasn't already present.
+func (ini *INI) SetInt(key string, value int) {
+	ini.SectionSetInt(DefaultSection, key, value)
+}
+
+// SetFloat store the key/value pair to the default section of this INI,
+// creating it if it wasn't already present.
+func (ini *INI) SetFloat(key string, value float64) {
+	ini.SectionSetFloat(DefaultSection, key, value)
+}
+
+// SetBool store the key/value pair to the default section of this INI,
+// creating it if it wasn't already present.
+func (ini *INI) SetBool(key string, value bool) {
+	ini.SectionSetBool(DefaultSection, key, value)
+}
+
+// SectionSetInt store the section/key/value triple to this INI,
+// creating it if it wasn't already present.
+func (ini *INI) SectionSetInt(section, key string, value int) {
+	ini.SectionSet(section, key, strconv.Itoa(value))
+}
+
+// SectionSetFloat store the section/key/value triple to this INI,
+// creating it if it wasn't already present.
+func (ini *INI) SectionSetFloat(section, key string, value float64) {
+	ini.SectionSet(section, key, strconv.FormatFloat(value, 'f', 8, 64))
+}
+
+// SectionSetBool store the section/key/value triple to this INI,
+// creating it if it wasn't already present.
+func (ini *INI) SectionSetBool(section, key string, value bool) {
+	var s = "false"
+	if value {
+		s = "true"
+	}
+	ini.SectionSet(section, key, s)
+}
+
+// SectionSet store the section/key/value triple to this INI,
+// creating it if it wasn't already present.
+func (ini *INI) SectionSet(section, key, value string) {
+	kvmap, ok := ini.sections[section]
+	if !ok {
+		kvmap = make(Kvmap)
+		ini.sections[section] = kvmap
+	}
+	kvmap[key] = value
+}
+
 //////////////////////////////////////////////////////////////////////////
 
 func (ini *INI) parseINI(data []byte, linesep, kvsep string) error {
