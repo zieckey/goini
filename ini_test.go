@@ -5,11 +5,11 @@
 package goini
 
 import (
+	"bytes"
+	"github.com/bmizerany/assert"
 	"path/filepath"
 	"runtime"
 	"testing"
-
-	"github.com/bmizerany/assert"
 )
 
 func Test1(t *testing.T) {
@@ -211,7 +211,7 @@ func TestMemoryData1(t *testing.T) {
 	raw := []byte("a:av||b:bv||c:cv||||d:dv||||||")
 	ini := New()
 	err := ini.Parse(raw, "|", ":")
-	assert.Equal(t, nil, err)
+	assert.Equal(t, err, nil)
 
 	v, ok := ini.Get("a")
 	assert.Equal(t, v, "av")
@@ -234,6 +234,38 @@ func TestMemoryData1(t *testing.T) {
 	assert.Equal(t, ok, true)
 
 	n, ok := ini.GetKvmap("n")
+	assert.Equal(t, len(n), 0)
+	assert.Equal(t, ok, false)
+
+	var buf bytes.Buffer
+	err = ini.Write(&buf)
+	assert.Equal(t, err, nil)
+
+	ini.Reset()
+	err = ini.Parse(raw, "|", ":")
+	assert.Equal(t, err, nil)
+
+	v, ok = ini.Get("a")
+	assert.Equal(t, v, "av")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("b")
+	assert.Equal(t, v, "bv")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("c")
+	assert.Equal(t, v, "cv")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.Get("d")
+	assert.Equal(t, v, "dv")
+	assert.Equal(t, ok, true)
+
+	m, ok = ini.GetKvmap("")
+	assert.Equal(t, len(m), 4)
+	assert.Equal(t, ok, true)
+
+	n, ok = ini.GetKvmap("n")
 	assert.Equal(t, len(n), 0)
 	assert.Equal(t, ok, false)
 }

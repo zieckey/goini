@@ -5,8 +5,10 @@
 package goini
 
 import (
+	"bufio"
 	"bytes"
 	"errors"
+	"io"
 	"io/ioutil"
 	"log"
 	"strconv"
@@ -214,7 +216,34 @@ func (ini *INI) SectionSet(section, key, value string) {
 	kvmap[key] = value
 }
 
+// Write try to write the INI data into an output.
+func (ini *INI) Write(w io.Writer) error {
+	buf := bufio.NewWriter(w)
+
+	//write the default section first
+	if kv, ok := ini.GetKvmap(DefaultSection); ok {
+		ini.write(kv, buf)
+	}
+
+	for section, kv := range ini.sections {
+		if section == DefaultSection {
+			continue
+		}
+		buf.WriteString("[" + section + "]" + ini.linesep)
+		ini.write(kv, buf)
+	}
+	return buf.Flush()
+}
+
 //////////////////////////////////////////////////////////////////////////
+func (ini *INI) write(kv Kvmap, buf *bufio.Writer) {
+	for k, v := range kv {
+		buf.WriteString(k)
+		buf.WriteString(ini.kvsep)
+		buf.WriteString(v)
+		buf.WriteString(ini.linesep)
+	}
+}
 
 func (ini *INI) parseINI(data []byte, linesep, kvsep string) error {
 	ini.linesep = linesep
