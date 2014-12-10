@@ -2,7 +2,7 @@ language: go
 go:
   - tip
 install:
-  - go get code.google.com/p/go.tools/cmd/cover
+  - go get golang.org/x/tools/cmd/cover 
   - go get github.com/mattn/goveralls
   - go get github.com/bmizerany/assert
 script:
