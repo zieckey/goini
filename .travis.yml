@@ -11,6 +11,6 @@ script:
   - go test -v -covermode=count -coverprofile=coverage.out
   - $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN  
 env:
-  - secure:   secure: "ZhPXb88DDCdQDsrh1p8QPCkRIgwuWaD50TC+Y6+xAa8UFQFJtrkjvUnlaKIcococB3LT7YsJlqSHvo+qNVPkc4KJ+FHRCQUlue3qCPjgXalOCjSGra/Au8MIqpwg/c8Ijon86H4cKYVA5FEc4N3u/4QKV0grAFxCcdZbkUKQAU8="
+  - secure: "ZhPXb88DDCdQDsrh1p8QPCkRIgwuWaD50TC+Y6+xAa8UFQFJtrkjvUnlaKIcococB3LT7YsJlqSHvo+qNVPkc4KJ+FHRCQUlue3qCPjgXalOCjSGra/Au8MIqpwg/c8Ijon86H4cKYVA5FEc4N3u/4QKV0grAFxCcdZbkUKQAU8="
 notifications:
   email: false
