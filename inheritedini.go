@@ -13,7 +13,22 @@ const (
 	InheritedFrom = "inherited_from" // The key of the INI path which will be inherited from
 )
 
-
+// LoadInheritedINI loads an INI file which will inherit from another INI
+// e.g:
+//	The common.ini has contents:
+//		project=common
+//		ip=192.168.0.1
+//
+//	And the project.ini has contents:
+//		project=ppp
+//		combo=ppp
+//		inherited_from=common.ini
+//
+//	The project.ini has the same configure as below :
+//		project=ppp
+//		combo=ppp
+//		ip=192.168.0.1
+//
 func LoadInheritedINI(filename string) (*INI, error) {
 	ini := New()
 	err := ini.ParseFile(filename)
