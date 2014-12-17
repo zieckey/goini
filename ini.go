@@ -154,6 +154,9 @@ func (ini *INI) SectionGetBool(section, key string) (value bool, ok bool) {
 }
 
 // GetKvmap gets all keys under section as a Kvmap (map[string]string).
+// The first return value will get the value that corresponds to the key
+// (or the map’s value type’s zero value if the key isn’t present),
+// and the second will get true(or false if the key isn’t present).
 func (ini *INI) GetKvmap(section string) (kvmap Kvmap, ok bool) {
 	kvmap, ok = ini.sections[section]
 	return kvmap, ok
@@ -214,6 +217,14 @@ func (ini *INI) SectionSet(section, key, value string) {
 		ini.sections[section] = kvmap
 	}
 	kvmap[key] = value
+}
+
+// Delete deletes the key in given section.
+func (ini *INI) Delete(section, key string) {
+	kvmap, ok := ini.GetKvmap(section)
+	if ok {
+		delete(kvmap, key)
+	}
 }
 
 // Write try to write the INI data into an output.

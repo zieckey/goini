@@ -61,6 +61,14 @@ func Test1(t *testing.T) {
 	i, ok := ini.SectionGetInt("ddd", "age")
 	assert.Equal(t, i, 30)
 	assert.Equal(t, ok, true)
+	ini.Delete("ddd", "age")
+	i, ok = ini.SectionGetInt("ddd", "age")
+	assert.Equal(t, i, 0)
+	assert.Equal(t, ok, false)
+	ini.Delete("ddd", "age")	// delete again
+	i, ok = ini.SectionGetInt("ddd", "age")
+	assert.Equal(t, i, 0)
+	assert.Equal(t, ok, false)
 
 	i, ok = ini.SectionGetInt("ddd", "agexxx")
 	assert.Equal(t, ok, false)
@@ -68,6 +76,10 @@ func Test1(t *testing.T) {
 	f, ok := ini.GetFloat("version")
 	assert.Equal(t, f, 4.4)
 	assert.Equal(t, ok, true)
+	ini.Delete("", "version")	// delete again
+	f, ok = ini.GetFloat("version")
+	assert.Equal(t, f, 0.0)
+	assert.Equal(t, ok, false)
 
 	f, ok = ini.SectionGetFloat("ddd", "height")
 	assert.Equal(t, f, 175.6)
