@@ -4,8 +4,8 @@ import (
 	"github.com/bmizerany/assert"
 	"log"
 	"path/filepath"
-	"testing"
 	"runtime"
+	"testing"
 )
 
 func init() {
@@ -39,6 +39,18 @@ func TestInheritedINI(t *testing.T) {
 	assert.Equal(t, v, "0")
 	assert.Equal(t, ok, true)
 
+	v, ok = ini.SectionGet("sss", "a")
+	assert.Equal(t, v, "aaval")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.SectionGet("sss", "b")
+	assert.Equal(t, v, "bval")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.SectionGet("sss", "c")
+	assert.Equal(t, v, "ccval")
+	assert.Equal(t, ok, true)
+
 	ini = New()
 	err = ini.ParseFile(filename)
 	assert.Equal(t, nil, err)
@@ -58,6 +70,18 @@ func TestInheritedINI(t *testing.T) {
 	v, ok = ini.Get("encoding")
 	assert.Equal(t, v, "")
 	assert.Equal(t, ok, false)
+
+	v, ok = ini.SectionGet("sss", "a")
+	assert.Equal(t, v, "aaval")
+	assert.Equal(t, ok, true)
+
+	v, ok = ini.SectionGet("sss", "b")
+	assert.Equal(t, v, "")
+	assert.Equal(t, ok, false)
+
+	v, ok = ini.SectionGet("sss", "c")
+	assert.Equal(t, v, "ccval")
+	assert.Equal(t, ok, true)
 }
 
 func TestInheritedINI2Error(t *testing.T) {
