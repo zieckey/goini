@@ -41,7 +41,7 @@ func LoadInheritedINI(filename string) (*INI, error) {
 		return ini, nil
 	}
 	
-	inherited = realpath(filename, inherited)
+	inherited = GetPathByRelativePath(filename, inherited)
 	inheritedINI, err := LoadInheritedINI(inherited)
 	if err != nil {
 		return nil, errors.New(err.Error() + " " + inherited)
@@ -64,11 +64,18 @@ func (ini *INI) Merge(from *INI, override bool) {
 	}
 }
 
-func realpath(currentPath, inheritedPath string) string {
+// GetPathByRelativePath gets the real path according to the relative file path
+// e.g. :
+// 	relativeFilePath = /home/goini/conf/common.conf
+//	inheritedPath = app.conf
+//
+// and then the GetPathByRelativePath(relativeFilePath, inheritedPath) will
+// return /home/goini/conf/app.conf
+func GetPathByRelativePath(relativeFilePath, inheritedPath string) string {
 	if filepath.IsAbs(inheritedPath) {
 		return inheritedPath
 	}
 	
-	dir, _ := filepath.Split(currentPath)
+	dir, _ := filepath.Split(relativeFilePath)
 	return filepath.Join(dir, inheritedPath)
 }
