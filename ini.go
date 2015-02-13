@@ -162,6 +162,11 @@ func (ini *INI) GetKvmap(section string) (kvmap Kvmap, ok bool) {
 	return kvmap, ok
 }
 
+// GetAll gets the section map and its key/value pairs.
+func (ini *INI) GetAll() SectionMap {
+	return ini.sections
+}
+
 // Set store the key/value pair to the default section of this INI,
 // creating it if it wasn't already present.
 func (ini *INI) Set(key, value string) {

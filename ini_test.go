@@ -12,7 +12,6 @@ import (
 	"testing"
 )
 
-
 func Test1(t *testing.T) {
 
 	filename := filepath.Join(getTestDataDir(t), "ini_parser_testfile.ini")
@@ -65,7 +64,7 @@ func Test1(t *testing.T) {
 	i, ok = ini.SectionGetInt("ddd", "age")
 	assert.Equal(t, i, 0)
 	assert.Equal(t, ok, false)
-	ini.Delete("ddd", "age")	// delete again
+	ini.Delete("ddd", "age") // delete again
 	i, ok = ini.SectionGetInt("ddd", "age")
 	assert.Equal(t, i, 0)
 	assert.Equal(t, ok, false)
@@ -76,7 +75,7 @@ func Test1(t *testing.T) {
 	f, ok := ini.GetFloat("version")
 	assert.Equal(t, f, 4.4)
 	assert.Equal(t, ok, true)
-	ini.Delete("", "version")	// delete again
+	ini.Delete("", "version") // delete again
 	f, ok = ini.GetFloat("version")
 	assert.Equal(t, f, 0.0)
 	assert.Equal(t, ok, false)
@@ -208,7 +207,6 @@ func Test2(t *testing.T) {
 	assert.Equal(t, ok, true)
 }
 
-
 func Test3(t *testing.T) {
 	filename := filepath.Join(getTestDataDir(t), "ini_parser_testfile.ini")
 	ini := New()
@@ -278,7 +276,6 @@ func Test3(t *testing.T) {
 	b, ok = ini.GetBool("debug")
 	assert.Equal(t, b, false)
 	assert.Equal(t, ok, true)
-
 
 	//Wirte
 	var buf bytes.Buffer
@@ -352,6 +349,20 @@ func Test3(t *testing.T) {
 	b, ok = ini.GetBool("debug")
 	assert.Equal(t, b, false)
 	assert.Equal(t, ok, true)
+}
+
+func Test4(t *testing.T) {
+	filename := filepath.Join(getTestDataDir(t), "ini_parser_testfile.ini")
+	ini := New()
+	err := ini.ParseFile(filename)
+	assert.Equal(t, nil, err)
+
+	v, ok := ini.Get("mid")
+	assert.Equal(t, v, "ac9219aa5232c4e519ae5fcb4d77ae5b")
+	assert.Equal(t, ok, true)
+
+	s := ini.GetAll()
+	assert.Equal(t, len(s), 3)
 }
 
 func TestFileNotExist(t *testing.T) {
