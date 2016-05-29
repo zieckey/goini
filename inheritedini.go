@@ -13,7 +13,7 @@ const (
 	InheritedFrom = "inherited_from" // The key of the INI path which will be inherited from
 )
 
-// LoadInheritedINI loads an INI file which will inherit from another INI
+// LoadInheritedINI loads an INI file which inherits from another INI
 // e.g:
 //	The common.ini has contents:
 //		project=common
