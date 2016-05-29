@@ -1,19 +1,22 @@
-## goini [![Build Status](https://secure.travis-ci.org/zieckey/goini.png)](http://travis-ci.org/zieckey/goini) [![Coverage Status](https://img.shields.io/coveralls/zieckey/goini.svg)](https://coveralls.io/r/zieckey/goini?branch=master)
+## goini 
+
+[![Build Status](https://secure.travis-ci.org/zieckey/goini.png)](http://travis-ci.org/zieckey/goini) [![Coverage Status](https://img.shields.io/coveralls/zieckey/goini.svg)](https://coveralls.io/r/zieckey/goini?branch=master)
          
 This is a Go package to interact with arbitrary INI.
 
-Our applications have a lot of memory data which are key/value pairs in the form of various separators NOT only '\n'. 
-I have not found any golang open source code suitable for it. So I write it myself.
+Our applications have a lot of memory data which are key/value pairs in the form of various separators NOT only `\n`. 
+I have not found any Golang open source code suitable for it. So I write it myself.
 
-`goini` is designed to be simple and flexible. It
+`goini` is designed to be simple, flexible, efficient. It
 
-1. Support the standard INI format
-1. Support section
-1. Support parsing INI file from local disk
-1. Support parsing INI configuration data from memory
-1. Support parsing data which are key/value pairs in the form of various separators NOT only '\n'
-1. Support UTF8 encoding
-1. Support comments which has a leading character ';' or '#'
+1. Supports the standard INI format
+1. Supports section
+1. Supports parsing INI file from local disk
+1. Supports parsing INI configuration data from memory
+1. Supports parsing data which are key/value pairs in the form of various separators NOT only `\n`
+1. Supports UTF8 encoding
+1. Supports comments which has a leading character `;` or `#`
+1. Only depends standard Golang libraries
 
 ## Importing
 
