@@ -1,11 +1,12 @@
 package goini
 
 import (
-	"github.com/bmizerany/assert"
 	"log"
 	"path/filepath"
 	"runtime"
 	"testing"
+
+	"github.com/bmizerany/assert"
 )
 
 func init() {

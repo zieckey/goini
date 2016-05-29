@@ -6,10 +6,11 @@ package goini
 
 import (
 	"bytes"
-	"github.com/bmizerany/assert"
 	"path/filepath"
 	"runtime"
 	"testing"
+
+	"github.com/bmizerany/assert"
 )
 
 func Test1(t *testing.T) {
