@@ -7,13 +7,12 @@ package main
 import (
 	"fmt"
 	"path/filepath"
-	"runtime"
 
 	"github.com/zieckey/goini"
 )
 
 func main() {
-	filename := filepath.Join(testDataDir(), "ini_parser_testfile.ini")
+	filename := filepath.Join("ini_parser_testfile.ini")
 	ini := goini.New()
 	err := ini.ParseFile(filename)
 	if err != nil {
@@ -48,13 +47,3 @@ func main() {
 	}
 }
 
-func testDataDir() string {
-	var file string
-	var ok bool
-	if _, file, _, ok = runtime.Caller(0); ok {
-		curdir := filepath.Dir(file)
-		return filepath.Join(curdir, "../data")
-	}
-
-	return ""
-}
