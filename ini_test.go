@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"path/filepath"
 	"runtime"
+    "os"
 	"testing"
 
 	"github.com/bmizerany/assert"
@@ -366,11 +367,41 @@ func Test4(t *testing.T) {
 	assert.Equal(t, len(s), 3)
 }
 
-func TestFileNotExist(t *testing.T) {
+func Test5(t *testing.T) {
+	filename := filepath.Join(getTestDataDir(t), "ini_parser_testfile.ini")
+	f, err := os.Open(filename)
+	defer f.Close()
+	assert.NotEqual(t, f, nil)
+	assert.Equal(t, err, nil)
+	ini := New()
+	ini.SetParseSection(true)
+	err = ini.ParseFrom(f, "\n", "=")
+	assert.Equal(t, nil, err)
+
+	v, ok := ini.Get("mid")
+	assert.Equal(t, v, "ac9219aa5232c4e519ae5fcb4d77ae5b")
+	assert.Equal(t, ok, true)
+
+	s := ini.GetAll()
+	assert.Equal(t, len(s), 3)
+}
+
+func TestFileNotExist1(t *testing.T) {
 	filename := "the/path/to/a/nonexist/ini/file"
 	ini := New()
 	err := ini.ParseFile(filename)
 	assert.NotEqual(t, nil, err)
+}
+
+func TestFileNotExist2(t *testing.T) {
+	filename := "the/path/to/a/nonexist/ini/file"
+	f, _ := os.Open(filename)
+	ini := New()
+	err := ini.ParseFrom(f, "\n", "=")
+	assert.NotEqual(t, nil, err)
+	if f != nil {
+		f.Close()
+	}
 }
 
 func TestUft8(t *testing.T) {

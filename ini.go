@@ -28,8 +28,8 @@ const (
 
 type INI struct {
 	sections     SectionMap
-	linesep      string
-	kvsep        string
+	lineSep      string
+	kvSep        string
 	parseSection bool
 	skipCommits  bool
 }
@@ -37,8 +37,8 @@ type INI struct {
 func New() *INI {
 	ini := &INI{
 		sections:     make(SectionMap),
-		linesep:      DefaultLineSeperator,
-		kvsep:        DefaultKeyValueSeperator,
+		lineSep:      DefaultLineSeperator,
+		kvSep:        DefaultKeyValueSeperator,
 		parseSection: false,
 		skipCommits:  false,
 	}
@@ -57,24 +57,34 @@ func (ini *INI) ParseFile(filename string) error {
 	return ini.parseINI(contents, DefaultLineSeperator, DefaultKeyValueSeperator)
 }
 
-// Parse parse the data to store the data in the INI
+// Parse parses the data to store the data in the INI
 // A successful call returns err == nil
 func (ini *INI) Parse(data []byte, lineSep, kvSep string) error {
 	return ini.parseINI(data, lineSep, kvSep)
 }
 
-// Reset clear all the data hold by INI
+// ParseFrom reads all the data from reader r and parse the contents to store the data in the INI
+// A successful call returns err == nil
+func (ini *INI) ParseFrom(r io.Reader, lineSep, kvSep string) error {
+	data, err := ioutil.ReadAll(r)
+	if err == nil {
+		return ini.parseINI(data, lineSep, kvSep)
+	}
+	return err
+}
+
+// Reset clears all the data hold by INI
 func (ini *INI) Reset() {
 	ini.sections = make(SectionMap)
 	//FIXME effective optimize
 }
 
-// SetSkipCommits set INI.skipCommits whether skip commits when parsing
+// SetSkipCommits sets INI.skipCommits whether skip commits when parsing
 func (ini *INI) SetSkipCommits(skipCommits bool) {
 	ini.skipCommits = skipCommits
 }
 
-// SetParseSection set INI.parseSection whether process the INI section when parsing
+// SetParseSection sets INI.parseSection whether process the INI section when parsing
 func (ini *INI) SetParseSection(parseSection bool) {
 	ini.parseSection = parseSection
 }
@@ -85,12 +95,12 @@ func (ini *INI) Get(key string) (value string, ok bool) {
 	return ini.SectionGet(DefaultSection, key)
 }
 
-// GetInt get value as int
+// GetInt gets value as int
 func (ini *INI) GetInt(key string) (value int, ok bool) {
 	return ini.SectionGetInt(DefaultSection, key)
 }
 
-// GetFloat get value as float64
+// GetFloat gets value as float64
 func (ini *INI) GetFloat(key string) (value float64, ok bool) {
 	return ini.SectionGetFloat(DefaultSection, key)
 }
@@ -112,7 +122,7 @@ func (ini *INI) SectionGet(section, key string) (value string, ok bool) {
 	return
 }
 
-// SectionGetInt get value as int
+// SectionGetInt gets value as int
 func (ini *INI) SectionGetInt(section, key string) (value int, ok bool) {
 	v, ok := ini.SectionGet(section, key)
 	if ok {
@@ -125,7 +135,7 @@ func (ini *INI) SectionGetInt(section, key string) (value int, ok bool) {
 	return 0, ok
 }
 
-// SectionGetFloat get value as float64
+// SectionGetFloat gets value as float64
 func (ini *INI) SectionGetFloat(section, key string) (value float64, ok bool) {
 	v, ok := ini.SectionGet(section, key)
 	if ok {
@@ -138,7 +148,7 @@ func (ini *INI) SectionGetFloat(section, key string) (value float64, ok bool) {
 	return 0.0, ok
 }
 
-// SectionGetBool get a value as bool. See GetBool for more detail
+// SectionGetBool gets a value as bool. See GetBool for more detail
 func (ini *INI) SectionGetBool(section, key string) (value bool, ok bool) {
 	v, ok := ini.SectionGet(section, key)
 	if ok {
@@ -167,7 +177,7 @@ func (ini *INI) GetAll() SectionMap {
 	return ini.sections
 }
 
-// Set store the key/value pair to the default section of this INI,
+// Set stores the key/value pair to the default section of this INI,
 // creating it if it wasn't already present.
 func (ini *INI) Set(key, value string) {
 	ini.SectionSet(DefaultSection, key, value)
@@ -179,31 +189,31 @@ func (ini *INI) SetInt(key string, value int) {
 	ini.SectionSetInt(DefaultSection, key, value)
 }
 
-// SetFloat store the key/value pair to the default section of this INI,
+// SetFloat stores the key/value pair to the default section of this INI,
 // creating it if it wasn't already present.
 func (ini *INI) SetFloat(key string, value float64) {
 	ini.SectionSetFloat(DefaultSection, key, value)
 }
 
-// SetBool store the key/value pair to the default section of this INI,
+// SetBool stores the key/value pair to the default section of this INI,
 // creating it if it wasn't already present.
 func (ini *INI) SetBool(key string, value bool) {
 	ini.SectionSetBool(DefaultSection, key, value)
 }
 
-// SectionSetInt store the section/key/value triple to this INI,
+// SectionSetInt stores the section/key/value triple to this INI,
 // creating it if it wasn't already present.
 func (ini *INI) SectionSetInt(section, key string, value int) {
 	ini.SectionSet(section, key, strconv.Itoa(value))
 }
 
-// SectionSetFloat store the section/key/value triple to this INI,
+// SectionSetFloat stores the section/key/value triple to this INI,
 // creating it if it wasn't already present.
 func (ini *INI) SectionSetFloat(section, key string, value float64) {
 	ini.SectionSet(section, key, strconv.FormatFloat(value, 'f', 8, 64))
 }
 
-// SectionSetBool store the section/key/value triple to this INI,
+// SectionSetBool stores the section/key/value triple to this INI,
 // creating it if it wasn't already present.
 func (ini *INI) SectionSetBool(section, key string, value bool) {
 	var s = "false"
@@ -213,7 +223,7 @@ func (ini *INI) SectionSetBool(section, key string, value bool) {
 	ini.SectionSet(section, key, s)
 }
 
-// SectionSet store the section/key/value triple to this INI,
+// SectionSet stores the section/key/value triple to this INI,
 // creating it if it wasn't already present.
 func (ini *INI) SectionSet(section, key, value string) {
 	kvmap, ok := ini.sections[section]
@@ -232,7 +242,7 @@ func (ini *INI) Delete(section, key string) {
 	}
 }
 
-// Write try to write the INI data into an output.
+// Write tries to write the INI data into an output.
 func (ini *INI) Write(w io.Writer) error {
 	buf := bufio.NewWriter(w)
 
@@ -245,7 +255,7 @@ func (ini *INI) Write(w io.Writer) error {
 		if section == DefaultSection {
 			continue
 		}
-		buf.WriteString("[" + section + "]" + ini.linesep)
+		buf.WriteString("[" + section + "]" + ini.lineSep)
 		ini.write(kv, buf)
 	}
 	return buf.Flush()
@@ -255,22 +265,22 @@ func (ini *INI) Write(w io.Writer) error {
 func (ini *INI) write(kv Kvmap, buf *bufio.Writer) {
 	for k, v := range kv {
 		buf.WriteString(k)
-		buf.WriteString(ini.kvsep)
+		buf.WriteString(ini.kvSep)
 		buf.WriteString(v)
-		buf.WriteString(ini.linesep)
+		buf.WriteString(ini.lineSep)
 	}
 }
 
-func (ini *INI) parseINI(data []byte, linesep, kvsep string) error {
-	ini.linesep = linesep
-	ini.kvsep = kvsep
+func (ini *INI) parseINI(data []byte, lineSep, kvSep string) error {
+	ini.lineSep = lineSep
+	ini.kvSep = kvSep
 
 	// Insert the default section
 	var section string
 	kvmap := make(Kvmap)
 	ini.sections[section] = kvmap
 
-	lines := bytes.Split(data, []byte(linesep))
+	lines := bytes.Split(data, []byte(lineSep))
 	for _, line := range lines {
 		line = bytes.TrimSpace(line)
 		size := len(line)
@@ -290,7 +300,7 @@ func (ini *INI) parseINI(data []byte, linesep, kvsep string) error {
 			continue
 		}
 
-		pos := bytes.Index(line, []byte(kvsep))
+		pos := bytes.Index(line, []byte(kvSep))
 		if pos < 0 {
 			// ERROR happened when passing
 			err := errors.New("Came accross an error : " + string(line) + " is NOT a valid key/value pair")
@@ -298,7 +308,7 @@ func (ini *INI) parseINI(data []byte, linesep, kvsep string) error {
 		}
 
 		k := bytes.TrimSpace(line[0:pos])
-		v := bytes.TrimSpace(line[pos+len(kvsep):])
+		v := bytes.TrimSpace(line[pos+len(kvSep):])
 		kvmap[string(k)] = string(v)
 	}
 	return nil
