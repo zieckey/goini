@@ -59,8 +59,8 @@ func (ini *INI) ParseFile(filename string) error {
 
 // Parse parse the data to store the data in the INI
 // A successful call returns err == nil
-func (ini *INI) Parse(data []byte, linesep, kvsep string) error {
-	return ini.parseINI(data, linesep, kvsep)
+func (ini *INI) Parse(data []byte, lineSep, kvSep string) error {
+	return ini.parseINI(data, lineSep, kvSep)
 }
 
 // Reset clear all the data hold by INI
