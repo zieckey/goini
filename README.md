@@ -16,6 +16,7 @@ I have not found any Golang open source code suitable for it. So I write it myse
 1. Supports parsing data which are key/value pairs in the form of various separators NOT only `\n`
 1. Supports UTF8 encoding
 1. Supports comments which has a leading character `;` or `#`
+1. Supports cascading inheritance
 1. Only depends standard Golang libraries
 1. Has 100% test coverage
 
