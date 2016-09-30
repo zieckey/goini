@@ -91,17 +91,17 @@ func (ini *INI) SetParseSection(parseSection bool) {
 
 // Get looks up a value for a key in the default section
 // and returns that value, along with a boolean result similar to a map lookup.
-func (ini *INI) Get(key string) (value string, ok bool) {
+func (ini *INI) Get(key string) (string, bool) {
 	return ini.SectionGet(DefaultSection, key)
 }
 
 // GetInt gets value as int
-func (ini *INI) GetInt(key string) (value int, ok bool) {
+func (ini *INI) GetInt(key string) (int, bool) {
 	return ini.SectionGetInt(DefaultSection, key)
 }
 
 // GetFloat gets value as float64
-func (ini *INI) GetFloat(key string) (value float64, ok bool) {
+func (ini *INI) GetFloat(key string) (float64, bool) {
 	return ini.SectionGetFloat(DefaultSection, key)
 }
 
@@ -109,7 +109,7 @@ func (ini *INI) GetFloat(key string) (value float64, ok bool) {
 // It accepts "1", "t", "T", "true", "TRUE", "True", "on", "ON", "On", "yes", "YES", "Yes" as true
 // and "0", "f", "F", "false", "FALSE", "False", "off", "OFF", "Off", "no", "NO", "No" as false
 // Any other value returns false.
-func (ini *INI) GetBool(key string) (value bool, ok bool) {
+func (ini *INI) GetBool(key string) (bool, bool) {
 	return ini.SectionGetBool(DefaultSection, key)
 }
 
@@ -123,7 +123,7 @@ func (ini *INI) SectionGet(section, key string) (value string, ok bool) {
 }
 
 // SectionGetInt gets value as int
-func (ini *INI) SectionGetInt(section, key string) (value int, ok bool) {
+func (ini *INI) SectionGetInt(section, key string) (int, bool) {
 	v, ok := ini.SectionGet(section, key)
 	if ok {
 		v, err := strconv.Atoi(v)
@@ -136,7 +136,7 @@ func (ini *INI) SectionGetInt(section, key string) (value int, ok bool) {
 }
 
 // SectionGetFloat gets value as float64
-func (ini *INI) SectionGetFloat(section, key string) (value float64, ok bool) {
+func (ini *INI) SectionGetFloat(section, key string) (float64, bool) {
 	v, ok := ini.SectionGet(section, key)
 	if ok {
 		v, err := strconv.ParseFloat(v, 64)
@@ -149,7 +149,7 @@ func (ini *INI) SectionGetFloat(section, key string) (value float64, ok bool) {
 }
 
 // SectionGetBool gets a value as bool. See GetBool for more detail
-func (ini *INI) SectionGetBool(section, key string) (value bool, ok bool) {
+func (ini *INI) SectionGetBool(section, key string) (bool, bool) {
 	v, ok := ini.SectionGet(section, key)
 	if ok {
 		switch v {
