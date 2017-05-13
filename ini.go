@@ -12,6 +12,7 @@ import (
 	"io/ioutil"
 	"log"
 	"strconv"
+	"strings"
 )
 
 // Suppress error if they are not otherwise used.
@@ -113,6 +114,11 @@ func (ini *INI) GetBool(key string) (bool, bool) {
 	return ini.SectionGetBool(DefaultSection, key)
 }
 
+// GetStringArray returns []string split by sep
+func (ini *INI) GetStringArray(key, sep string) ([]string, bool) {
+	return ini.SectionGetStringArray(DefaultSection, key, sep)
+}
+
 // SectionGet looks up a value for a key in a section
 // and returns that value, along with a boolean result similar to a map lookup.
 func (ini *INI) SectionGet(section, key string) (value string, ok bool) {
@@ -161,6 +167,23 @@ func (ini *INI) SectionGetBool(section, key string) (bool, bool) {
 	}
 
 	return false, false
+}
+
+// SectionGetStringArray gets a value as []string.
+// for example, conf like:
+// [str_arr_test]
+// str_array = str1|str2|str3
+//
+// ini.SectionGetStringArray("str_arr_test", "str_array", "|")
+// will return: []string{"str1", "str2", "str3"}, true
+func (ini *INI) SectionGetStringArray(section, key, sep string) ([]string, bool) {
+	v, ok := ini.SectionGet(section, key)
+	if ok {
+		fields := strings.Split(v, sep)
+		return fields, true
+	}
+
+	return nil, false
 }
 
 // GetKvmap gets all keys under section as a Kvmap (map[string]string).

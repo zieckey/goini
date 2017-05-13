@@ -33,17 +33,16 @@ func main() {
 		fmt.Printf("sss size is invalid\n")
 		return
 	}
-	
+
 	v, ok = ini.SectionGet("sss", "aa")
 	if !ok || v != "bb" {
 		fmt.Printf("sss/aa value is invalid\n")
 		return
 	}
-	
+
 	v, ok = ini.SectionGet("sss", "appext")
 	if !ok || v != "ab=cd" {
 		fmt.Printf("sss/appext value is invalid\n")
 		return
 	}
 }
-
