@@ -96,7 +96,6 @@ func Test1(t *testing.T) {
 	b, ok = ini.GetBool("debug")
 	assert.Equal(t, b, false)
 	assert.Equal(t, ok, true)
-
 }
 
 func Test2(t *testing.T) {
@@ -676,6 +675,21 @@ func TestSetSkipCommits(t *testing.T) {
 	assert.Equal(t, nil, err)
 }
 
+func TestGetStringArray(t *testing.T) {
+	filename := filepath.Join(getTestDataDir(t), "ini_arr_test.ini")
+	ini := New()
+	err := ini.ParseFile(filename)
+	assert.Equal(t, nil, err)
+
+    arr, ok := ini.GetStringArray("default_str_arr", "|")
+    assert.Equal(t, testSliceEqual(arr, []string{"default1", "default2", "default3"}), true)
+    assert.Equal(t, ok, true)
+
+    arr, ok = ini.SectionGetStringArray("section1", "s1_str_arr", "||")
+    assert.Equal(t, testSliceEqual(arr, []string{"s1_str1", "s1_str2", "s1_str3"}), true)
+    assert.Equal(t, ok, true)
+}
+
 func TestReset(t *testing.T) {
 	raw := []byte("a:1||b:True||c:true||||d:off||e:on||f:false||g:0||||||")
 	ini := New()
@@ -726,4 +740,18 @@ func getTestDataDir(t *testing.T) string {
 
 	curdir := filepath.Dir(file)
 	return filepath.Join(curdir, "examples/data")
+}
+
+func testSliceEqual(s1, s2 []string) bool {
+    if len(s1) != len(s2) {
+        return false
+    }
+
+    for i, v := range s1 {
+        if v != s2[i] {
+            return false
+        }
+    }
+
+    return true
 }

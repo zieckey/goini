@@ -1,9 +1,9 @@
 package goini
 
 import (
-	"path/filepath"
 	"errors"
 	"log"
+	"path/filepath"
 )
 
 // Suppress error if they are not otherwise used.
@@ -35,18 +35,18 @@ func LoadInheritedINI(filename string) (*INI, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	inherited, ok := ini.Get(InheritedFrom)
 	if !ok {
 		return ini, nil
 	}
-	
+
 	inherited = GetPathByRelativePath(filename, inherited)
 	inheritedINI, err := LoadInheritedINI(inherited)
 	if err != nil {
 		return nil, errors.New(err.Error() + " " + inherited)
 	}
-	
+
 	ini.Merge(inheritedINI, false)
 	return ini, nil
 }
@@ -75,7 +75,7 @@ func GetPathByRelativePath(relativeFilePath, inheritedPath string) string {
 	if filepath.IsAbs(inheritedPath) {
 		return inheritedPath
 	}
-	
+
 	dir, _ := filepath.Split(relativeFilePath)
 	return filepath.Join(dir, inheritedPath)
 }
