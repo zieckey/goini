@@ -1,6 +1,8 @@
 ## goini 
 
-[![Build Status](https://secure.travis-ci.org/zieckey/goini.png)](http://travis-ci.org/zieckey/goini) [![Coverage Status](https://img.shields.io/coveralls/zieckey/goini.svg)](https://coveralls.io/r/zieckey/goini?branch=master)
+This repository has been forked from  github.com/zieckey/goini
+
+It fixes a bug (https://github.com/zieckey/goini/issues/4) and offers a method to retrieve the ini configuration sections as a list.  
          
 This is a Go package to interact with arbitrary INI.
 
@@ -22,7 +24,7 @@ I have not found any Golang open source code suitable for it. So I write it myse
 
 ## Importing
 
-    import github.com/zieckey/goini
+    import github.com/flevanti/goini
 
 ## Usage
 
@@ -30,7 +32,7 @@ I have not found any Golang open source code suitable for it. So I write it myse
 
 The simplest example code is :
 ```go
-import github.com/zieckey/goini
+import github.com/flevanti/goini
 
 ini := goini.New()
 err := ini.ParseFile(filename)
