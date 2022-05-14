@@ -96,7 +96,9 @@ func Test1(t *testing.T) {
 	b, ok = ini.GetBool("debug")
 	assert.Equal(t, b, false)
 	assert.Equal(t, ok, true)
-
+	
+        l := ini.GetSectionsList()
+	assert.Equal(t, len(l), 2)
 }
 
 func Test2(t *testing.T) {

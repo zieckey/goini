@@ -119,6 +119,18 @@ func (ini *INI) GetBool(key string) (bool, bool) {
     return ini.SectionGetBool(DefaultSection, key)
 }
 
+// GetSectionsList returns the list of sections found in the parsed ini files
+func (ini *INI) GetSectionsList() []string {
+	var l []string
+	for k := range ini.sections {
+		if k == "" {
+			continue
+		}
+		l = append(l, k)
+	}
+	return l
+}
+
 // SectionGet looks up a value for a key in a section
 // and returns that value, along with a boolean result similar to a map lookup.
 func (ini *INI) SectionGet(section, key string) (value string, ok bool) {
@@ -294,7 +306,7 @@ func (ini *INI) parseINI(data []byte, lineSep, kvSep string) error {
             // Skip blank lines
             continue
         }
-        if ini.skipCommits && line[0] == ';' || line[0] == '#' {
+        if ini.skipCommits && (line[0] == ';' || line[0] == '#') {
             // Skip comments
             continue
         }

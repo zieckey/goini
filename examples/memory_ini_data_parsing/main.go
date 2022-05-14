@@ -6,7 +6,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/zieckey/goini"
+
+	"github.com/flevanti/goini"
 )
 
 func f1() {
