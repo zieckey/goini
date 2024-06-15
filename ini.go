@@ -9,7 +9,7 @@ import (
     "bytes"
     "errors"
     "io"
-    "io/ioutil"
+    "os"
     "log"
     "strconv"
 )
@@ -49,7 +49,7 @@ func New() *INI {
 // ParseFile reads the INI file named by filename and parse the contents to store the data in the INI
 // A successful call returns err == nil
 func (ini *INI) ParseFile(filename string) error {
-    contents, err := ioutil.ReadFile(filename)
+    contents, err := os.ReadFile(filename)
     if err != nil {
         return err
     }
@@ -67,7 +67,7 @@ func (ini *INI) Parse(data []byte, lineSep, kvSep string) error {
 // ParseFrom reads all the data from reader r and parse the contents to store the data in the INI
 // A successful call returns err == nil
 func (ini *INI) ParseFrom(r io.Reader, lineSep, kvSep string) error {
-    data, err := ioutil.ReadAll(r)
+    data, err := io.ReadAll(r)
     if err == nil {
         return ini.parseINI(data, lineSep, kvSep)
     }
